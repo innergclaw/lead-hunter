@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 const https = require('https');
 const { exec } = require('child_process');
 
@@ -46,7 +47,7 @@ function tandemRequest(endpoint, method = 'GET', body = null) {
       }
     };
 
-    const req = https.request(options, (res) => {
+    const req = http.request(options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -197,6 +198,80 @@ async function huntNiche(niche, location, tier, needed) {
   return leads;
 }
 
+// Try alternative searches when primary doesn't yield enough
+async function tryAlternativeSearches(niche, location, tier, needed, existingLeads) {
+  const alternativeTerms = [
+    `${niche} near me`,
+    `${niche} ${location}`,
+    `best ${niche} ${location}`,
+    `${niche} services ${location}`
+  ];
+  
+  const allLeads = [...existingLeads];
+  const seenNames = new Set(existingLeads.map(l => l.name.toLowerCase()));
+  
+  for (const term of alternativeTerms) {
+    if (allLeads.length >= needed) break;
+    
+    console.log(`\n🔄 Trying alternative: "${term}"`);
+    
+    const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(term)}`;
+    await openTab(searchUrl, true);
+    await new Promise(r => setTimeout(r, 5000));
+    
+    const content = await getPageContent();
+    const newLeads = parseLeadsFromDuckDuckGo(content, tier);
+    
+    // Add only unique leads
+    for (const lead of newLeads) {
+      if (!seenNames.has(lead.name.toLowerCase()) && allLeads.length < needed) {
+        seenNames.add(lead.name.toLowerCase());
+        allLeads.push(lead);
+      }
+    }
+    
+    console.log(`   Total now: ${allLeads.length}/${needed} leads`);
+  }
+  
+  return allLeads;
+}
+
+// Expand search radius for more leads
+async function expandSearchRadius(niche, location, tier, needed, existingLeads) {
+  const nearbyAreas = [
+    `${location} area`,
+    `near ${location}`,
+    `${location} metro`
+  ];
+  
+  const allLeads = [...existingLeads];
+  const seenNames = new Set(existingLeads.map(l => l.name.toLowerCase()));
+  
+  for (const area of nearbyAreas) {
+    if (allLeads.length >= needed) break;
+    
+    console.log(`\n🌎 Expanding to: "${niche} ${area}"`);
+    
+    const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(niche + ' ' + area)}`;
+    await openTab(searchUrl, true);
+    await new Promise(r => setTimeout(r, 5000));
+    
+    const content = await getPageContent();
+    const newLeads = parseLeadsFromDuckDuckGo(content, tier);
+    
+    for (const lead of newLeads) {
+      if (!seenNames.has(lead.name.toLowerCase()) && allLeads.length < needed) {
+        seenNames.add(lead.name.toLowerCase());
+        allLeads.push(lead);
+      }
+    }
+    
+    console.log(`   Total now: ${allLeads.length}/${needed} leads`);
+  }
+  
+  return allLeads;
+}
+
 // Main hunt function
 async function fullAutoHunt(submissionFile) {
   console.log('🤖 LEAD HUNTER — FULL AUTO MODE');
@@ -240,7 +315,7 @@ async function fullAutoHunt(submissionFile) {
   console.log('');
   
   // Hunt each niche
-  const allLeads = [];
+  let allLeads = [];
   
   for (const n of nichesToHunt) {
     const leads = await huntNiche(n, location, tier, leadsPerNiche);
@@ -255,11 +330,49 @@ async function fullAutoHunt(submissionFile) {
     if (allLeads.length >= leadsNeeded) break;
   }
   
-  // Trim to exact number needed
-  const finalLeads = allLeads.slice(0, leadsNeeded);
+  // If we still don't have enough, try alternative searches
+  if (allLeads.length < leadsNeeded) {
+    console.log(`\n⚠️  Only found ${allLeads.length}/${leadsNeeded} leads. Trying alternatives...`);
+    
+    for (const n of nichesToHunt) {
+      if (allLeads.length >= leadsNeeded) break;
+      
+      allLeads = await tryAlternativeSearches(n, location, tier, leadsNeeded, allLeads);
+    }
+  }
   
-  console.log(`\n✅ HUNT COMPLETE!`);
-  console.log(`   Total leads found: ${finalLeads.length}`);
+  // If still not enough, expand search radius
+  if (allLeads.length < leadsNeeded) {
+    console.log(`\n⚠️  Still need ${leadsNeeded - allLeads.length} leads. Expanding search area...`);
+    
+    for (const n of nichesToHunt) {
+      if (allLeads.length >= leadsNeeded) break;
+      
+      allLeads = await expandSearchRadius(n, location, tier, leadsNeeded, allLeads);
+    }
+  }
+  
+  // Remove duplicates by name
+  const seenNames = new Set();
+  const uniqueLeads = [];
+  for (const lead of allLeads) {
+    const nameKey = lead.name.toLowerCase();
+    if (!seenNames.has(nameKey) && uniqueLeads.length < leadsNeeded) {
+      seenNames.add(nameKey);
+      uniqueLeads.push(lead);
+    }
+  }
+  
+  const finalLeads = uniqueLeads;
+  const isPartial = finalLeads.length < leadsNeeded;
+  
+  console.log(`\n${isPartial ? '⚠️' : '✅'} HUNT ${isPartial ? 'PARTIALLY COMPLETE' : 'COMPLETE'}!`);
+  console.log(`   Leads found: ${finalLeads.length}/${leadsNeeded}`);
+  
+  if (isPartial) {
+    console.log(`   Note: Could not find ${leadsNeeded - finalLeads.length} more unique leads.`);
+    console.log(`   This area may be saturated or the niche too specific.`);
+  }
   
   // Generate output file
   const timestamp = new Date().toISOString().split('T')[0];
@@ -281,10 +394,11 @@ async function fullAutoHunt(submissionFile) {
       niches_hunted: nichesToHunt,
       leads_requested: leadsNeeded,
       leads_found: finalLeads.length,
+      is_partial: isPartial,
       tier
     },
     leads: finalLeads,
-    status: 'ready_to_send'
+    status: isPartial ? 'partial_ready_to_send' : 'ready_to_send'
   };
   
   fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
@@ -304,13 +418,20 @@ async function fullAutoHunt(submissionFile) {
   fs.renameSync(submissionFile, processedFile);
   
   // FINAL NOTIFICATION
+  const statusEmoji = isPartial ? '⚠️' : '✅';
+  const statusText = isPartial ? 'PARTIALLY COMPLETE' : 'COMPLETE';
+  
   console.log('\n');
   console.log('╔══════════════════════════════════════════════════════════╗');
   console.log('║                                                          ║');
-  console.log('║  🎉 DONE! LEAD HUNT COMPLETE! 🎉                        ║');
+  console.log(`║  ${statusEmoji} DONE! LEAD HUNT ${statusText}! ${statusEmoji}          ║`);
   console.log('║                                                          ║');
   console.log(`║  Customer: ${name.padEnd(45)} ║`);
   console.log(`║  Leads: ${String(finalLeads.length).padEnd(48)} ║`);
+  console.log(`║  Requested: ${String(leadsNeeded).padEnd(44)} ║`);
+  if (isPartial) {
+    console.log(`║  ⚠️  Shortfall: ${String(leadsNeeded - finalLeads.length).padEnd(41)} ║`);
+  }
   console.log(`║  File: ${outputFile.split('/').pop().slice(0, 45).padEnd(47)} ║`);
   console.log('║                                                          ║');
   console.log('║  Next step: Review leads, then run:                     ║');
