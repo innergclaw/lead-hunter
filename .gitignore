@@ -1,1 +1,24 @@
-*.md
+# Sensitive docs with API keys
+STRIPE_LINKS.md
+STRIPE_SETUP.md
+PAYMENT_SETUP.md
+UPDATED_LINKS.md
+FINAL_CHECKLIST.md
+FORMS_SETUP.md
+
+# Data folders (customer info)
+pending/
+output/
+processed/
+emails/
+
+# Runtime files
+hunt-state.json
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
