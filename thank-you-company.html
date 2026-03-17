@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Lead Hunter Company</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --surface-2: #1a1a1e;
+      --border: #2a2a30;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --teal: #00D1C7;
+      --green: #22c55e;
+      --lime: #C7F464;
+    }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+    .success-banner {
+      background: rgba(199, 244, 100, 0.1);
+      border: 1px solid var(--lime);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .success-banner h2 {
+      color: var(--lime);
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .success-banner p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-top: 6px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-size: 17px;
+    }
+    .plan-badge {
+      display: inline-block;
+      background: var(--lime);
+      color: #000;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: var(--bg);
+      border-radius: 12px;
+    }
+    .feature-item {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .feature-item::before {
+      content: "✓";
+      color: var(--lime);
+      font-weight: 700;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 16px;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--lime);
+    }
+    .note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .niche-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .checkbox-item:hover {
+      border-color: var(--lime);
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--lime);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+    .priority-box {
+      background: rgba(199, 244, 100, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .priority-box h4 {
+      color: var(--lime);
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .priority-box p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-banner">
+      <h2>🚀 Welcome to the Company Plan!</h2>
+      <p>Your agency-level subscription is active. Let's build your lead pipeline.</p>
+    </div>
+    
+    <div class="card">
+      <div class="plan-badge">Company Plan — $299/mo</div>
+      <h1>Agency Lead Configuration</h1>
+      <p class="subtitle">150 verified leads per month. Unlimited niches. White-glove setup.</p>
+      
+      <div class="feature-grid">
+        <div class="feature-item">150 leads/mo</div>
+        <div class="feature-item">Verified emails + phones</div>
+        <div class="feature-item">Unlimited niches</div>
+        <div class="feature-item">Custom scripts</div>
+        <div class="feature-item">Daily reports</div>
+        <div class="feature-item">Dedicated support</div>
+        <div class="feature-item">White-label options</div>
+        <div class="feature-item">Priority hunting</div>
+        <div class="feature-item">API access</div>
+      </div>
+      
+      <div class="priority-box">
+        <h4>🎯 Company Plan Perks</h4>
+        <p>Your leads get priority in our hunting queue. We also include verified phone numbers, social media audits, and can white-label deliverables for your clients.</p>
+      </div>
+      
+      <form action="https://formspree.io/f/xnjgoqpb" method="POST">
+        <input type="hidden" name="plan" value="Company">
+        
+        <div class="two-col">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="John Smith" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="company">Company/Agency Name</label>
+            <input type="text" id="company" name="company_name" placeholder="Acme Digital Agency" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Business Email</label>
+          <input type="email" id="email" name="email" placeholder="john@acmeagency.com" required>
+          <p class="note">Same email used for Stripe billing</p>
+        </div>
+        
+        <div class="form-group">
+          <label>Select Your Niches (Unlimited)</label>
+          <div class="niche-grid">
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="barbershop"> Barbershops</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="nail-salon"> Nail Salons</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="hair-stylist"> Hair Stylists</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="lash-tech"> Lash Techs</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="esthetician"> Estheticians</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="photographer"> Photographers</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="fitness-trainer"> Fitness Trainers</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="tattoo-artist"> Tattoo Artists</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="car-detailing"> Car Detailing</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="cleaning"> Cleaning</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="massage"> Massage Therapy</label>
+            <label class="checkbox-item"><input type="checkbox" name="niches" value="other"> Other (specify)</label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="custom_niche">Don't see your niche? Provide your target audience here</label>
+          <input type="text" id="custom_niche" name="custom_niche" placeholder="e.g., Dog groomers, Food trucks, Wedding planners, Auto mechanics">
+        </div>
+        
+        <div class="two-col">
+          <div class="form-group">
+            <label for="primary_location">Primary Location</label>
+            <input type="text" id="primary_location" name="primary_location" placeholder="Philadelphia, PA" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="radius">Search Radius</label>
+            <select id="radius" name="radius" required>
+              <option value="10">10 miles</option>
+              <option value="25" selected>25 miles</option>
+              <option value="50">50 miles</option>
+              <option value="100">100 miles</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="additional_locations">Additional Locations (Optional)</label>
+          <input type="text" id="additional_locations" name="additional_locations" placeholder="e.g., Camden NJ, Wilmington DE, or leave blank">
+        </div>
+        
+        <div class="form-group">
+          <label for="service">What services does your agency offer?</label>
+          <select id="service" name="agency_service" required>
+            <option value="" disabled selected>Select primary service...</option>
+            <option value="web-design">Web Design & Development</option>
+            <option value="booking-systems">Booking & Scheduling Systems</option>
+            <option value="digital-marketing">Digital Marketing</option>
+            <option value="seo">SEO & Local Search</option>
+            <option value="social-media">Social Media Management</option>
+            <option value="branding">Branding & Design</option>
+            <option value="full-service">Full-Service Agency</option>
+            <option value="other">Other (specify below)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="team_size">How many people on your sales team?</label>
+          <select id="team_size" name="team_size" required>
+            <option value="1-2">Just me / 1-2 people</option>
+            <option value="3-5">3-5 people</option>
+            <option value="6-10">6-10 people</option>
+            <option value="10+">10+ people</option>
+          </select>
+          <p class="note">This helps us calibrate lead volume per person</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="custom_needs">Custom Requirements (Optional)</label>
+          <textarea id="custom_needs" name="custom_needs" rows="4" placeholder="Tell us about any specific requirements: minimum review counts, businesses that must have Instagram, exclude certain areas, white-label deliverables for your clients, etc."></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Launch My Lead Pipeline →</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

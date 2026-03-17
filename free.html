@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get 5 Free Leads — Lead Hunter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --surface-2: #1a1a1e;
+      --border: #2a2a30;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --teal: #00D1C7;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .logo a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .logo span {
+      color: var(--teal);
+    }
+    
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .subtitle {
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--teal);
+    }
+    
+    input::placeholder {
+      color: var(--text-muted);
+    }
+    
+    .note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--teal);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      margin-top: 8px;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .what-you-get {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .what-you-get h3 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    
+    .what-you-get ul {
+      list-style: none;
+    }
+    
+    .what-you-get li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    
+    .what-you-get li::before {
+      content: "✓";
+      width: 20px;
+      height: 20px;
+      background: rgba(0, 209, 199, 0.1);
+      color: var(--teal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    
+    .footer a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <a href="index.html">Lead <span>Hunter</span></a>
+    </div>
+    
+    <div class="card">
+      <h1>Get 5 Free Leads</h1>
+      <p class="subtitle">No credit card required. Delivered in 24-48 hours.</p>
+      
+      <form action="https://formspree.io/f/xkoqpnjo" method="POST">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="John Smith" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="john@example.com" required>
+          <p class="note">We'll send your leads here</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="niche">What niche do you want leads for?</label>
+          <select id="niche" name="niche" required>
+            <option value="" disabled selected>Select a niche...</option>
+            <option value="barbershop">Barbershops</option>
+            <option value="nail-salon">Nail Salons</option>
+            <option value="hair-stylist">Hair Stylists</option>
+            <option value="lash-tech">Lash Techs</option>
+            <option value="esthetician">Estheticians</option>
+            <option value="photographer">Photographers</option>
+            <option value="fitness-trainer">Fitness Trainers</option>
+            <option value="tattoo-artist">Tattoo Artists</option>
+            <option value="car-detailing">Car Detailing</option>
+            <option value="cleaning">Cleaning Services</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="custom_niche">Don't see your niche? Provide your target audience here</label>
+          <input type="text" id="custom_niche" name="custom_niche" placeholder="e.g., Dog groomers, Food trucks, Wedding planners">
+        </div>
+        
+        <div class="form-group">
+          <label for="location">What city/area?</label>
+          <input type="text" id="location" name="location" placeholder="Philadelphia, PA" required>
+          <p class="note">We hunt leads within 25 miles of this location</p>
+        </div>
+        
+        <button type="submit" class="submit-btn">Get My Free Leads →</button>
+      </form>
+      
+      <div class="what-you-get">
+        <h3>What You Get (Free)</h3>
+        <ul>
+          <li>5 local business leads</li>
+          <li>Business names & addresses</li>
+          <li>Phone numbers</li>
+          <li>Google Maps links</li>
+          <li>No credit card required</li>
+        </ul>
+      </div>
+    </div>
+    
+    <p class="footer">
+      Want more leads? <a href="index.html#pricing">View paid plans →</a>
+    </p>
+  </div>
+</body>
+</html>

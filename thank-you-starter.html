@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Lead Hunter Starter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --surface-2: #1a1a1e;
+      --border: #2a2a30;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --teal: #00D1C7;
+      --green: #22c55e;
+    }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+    }
+    .success-banner {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 16px 24px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .success-banner h2 {
+      color: var(--green);
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .success-banner p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+    .plan-badge {
+      display: inline-block;
+      background: var(--teal);
+      color: #000;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 16px;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--teal);
+    }
+    .note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--teal);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+    .what-next {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .what-next h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .what-next ul {
+      list-style: none;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .what-next li {
+      padding: 6px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+    .what-next li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-banner">
+      <h2>✓ Payment Successful</h2>
+      <p>Welcome to Lead Hunter Starter!</p>
+    </div>
+    
+    <div class="card">
+      <div class="plan-badge">Starter Plan — $29/mo</div>
+      <h1>Tell us what you need</h1>
+      <p class="subtitle">Fill this out so we can hunt the right leads for you. Takes 2 minutes.</p>
+      
+      <!-- Formspree form -->
+      <form action="https://formspree.io/f/xreyogpk" method="POST">
+        <!-- Hidden fields to identify plan -->
+        <input type="hidden" name="plan" value="Starter">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="John Smith" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="john@example.com" required>
+          <p class="note">Same email you used for Stripe</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="niche">Primary Niche (Pick 1)</label>
+          <select id="niche" name="niche" required>
+            <option value="" disabled selected>Select your niche...</option>
+            <option value="barbershop">Barbershops</option>
+            <option value="nail-salon">Nail Salons</option>
+            <option value="hair-stylist">Hair Stylists</option>
+            <option value="lash-tech">Lash Techs</option>
+            <option value="esthetician">Estheticians</option>
+            <option value="photographer">Photographers</option>
+            <option value="fitness-trainer">Fitness Trainers</option>
+            <option value="tattoo-artist">Tattoo Artists</option>
+            <option value="car-detailing">Car Detailing</option>
+            <option value="cleaning">Cleaning Services</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="custom_niche">Don't see your niche? Provide your target audience here</label>
+          <input type="text" id="custom_niche" name="custom_niche" placeholder="e.g., Dog groomers, Food trucks, Wedding planners">
+        </div>
+        
+        <div class="form-group">
+          <label for="location">Target Location</label>
+          <input type="text" id="location" name="location" placeholder="Philadelphia, PA" required>
+          <p class="note">City, metro area, or "within 25 miles of [zip code]"</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="criteria">Any specific criteria? (Optional)</label>
+          <textarea id="criteria" name="criteria" rows="3" placeholder="e.g., Only businesses with Instagram, no website required, etc."></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Submit & Start Hunting →</button>
+      </form>
+      
+      <div class="what-next">
+        <h3>What happens next?</h3>
+        <ul>
+          <li>We review your preferences</li>
+          <li>Start hunting leads within 24 hours</li>
+          <li>First 15 leads delivered to your email</li>
+          <li>New leads every month on your billing date</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

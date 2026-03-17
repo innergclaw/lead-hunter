@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Hunter — Qualified Local Leads Delivered</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --surface-2: #1a1a1e;
+      --border: #2a2a30;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --teal: #00D1C7;
+      --cyan: #2DE2E6;
+      --lime: #C7F464;
+      --purple: #a855f7;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 100px 24px 80px;
+      background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 209, 199, 0.1);
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    
+    h1 {
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    
+    h1 span {
+      color: var(--teal);
+    }
+    
+    .subtitle {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--teal);
+      color: #000;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(0, 209, 199, 0.3);
+    }
+    
+    /* Social Proof */
+    .social-proof {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--teal);
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Features */
+    .features {
+      padding: 100px 24px;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 64px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+    
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      border-color: var(--teal);
+      transform: translateY(-4px);
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(0, 209, 199, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+    
+    /* Pricing */
+    .pricing {
+      padding: 100px 24px;
+      background: var(--surface);
+    }
+    
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Comparison Table */
+    .comparison {
+      padding: 100px 24px;
+      background: var(--bg);
+    }
+
+    .comparison-table {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table th {
+      background: var(--surface);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .comparison-table th:first-child {
+      border-radius: 12px 0 0 0;
+    }
+
+    .comparison-table th:last-child {
+      border-radius: 0 12px 0 0;
+    }
+
+    .comparison-table tr:last-child td:first-child {
+      border-radius: 0 0 0 12px;
+    }
+
+    .comparison-table tr:last-child td:last-child {
+      border-radius: 0 0 12px 0;
+    }
+
+    .comparison-table td {
+      background: var(--surface-2);
+    }
+
+    .comparison-table tr:hover td {
+      background: var(--surface);
+    }
+
+    .comparison-table .check {
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .comparison-table .x {
+      color: var(--text-muted);
+    }
+
+    .comparison-table .highlight {
+      background: rgba(0, 209, 199, 0.1);
+      font-weight: 600;
+    }
+
+    .comparison-table .highlight td {
+      background: rgba(0, 209, 199, 0.05);
+    }
+
+    .comparison-note {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 32px;
+    }
+    
+    .pricing-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 32px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .pricing-card:hover {
+      border-color: var(--teal);
+    }
+    
+    .pricing-card.popular {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 1px var(--teal), 0 20px 60px rgba(0, 209, 199, 0.15);
+    }
+    
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--teal);
+      color: #000;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .pricing-card h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .pricing-card .price {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    
+    .pricing-card .price span {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    
+    .pricing-card .description {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .pricing-card ul {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+    
+    .pricing-card li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      font-size: 15px;
+    }
+    
+    .pricing-card li::before {
+      content: "✓";
+      width: 20px;
+      height: 20px;
+      background: rgba(0, 209, 199, 0.1);
+      color: var(--teal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .pricing-card .cta {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .pricing-card.popular .cta {
+      background: var(--teal);
+      color: #000;
+      border-color: var(--teal);
+    }
+    
+    .pricing-card .cta:hover {
+      transform: translateY(-2px);
+    }
+    
+    /* FAQ */
+    .faq {
+      padding: 100px 24px;
+    }
+    
+    .faq-grid {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .faq-item h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .faq-item p {
+      color: var(--text-muted);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      padding: 100px 24px;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+    }
+    
+    .cta-section h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    
+    .cta-section p {
+      color: var(--text-muted);
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 36px; }
+      .social-proof { flex-direction: column; gap: 24px; }
+      .pricing-grid { 
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .comparison-table {
+        font-size: 12px;
+      }
+      .comparison-table th,
+      .comparison-table td {
+        padding: 10px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="badge">🎯 Now Accepting Beta Users</div>
+      <h1>Stop Hunting. <br><span>Start Closing.</span></h1>
+      <p class="subtitle">Qualified local business leads delivered to your inbox. We find barbershops, lash techs, nail salons, and more — so you can focus on selling.</p>
+      <a href="free.html" class="hero-cta">Get 5 Free Leads →</a>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="social-proof">
+    <div class="stat">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">Leads Found</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">8</div>
+      <div class="stat-label">Niches Covered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">40%</div>
+      <div class="stat-label">Avg Response Rate</div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>We Hunt</h3>
+          <p>Our agents scour Google Maps, Instagram, and directories to find businesses with no websites, low reviews, and high booking potential.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✓</div>
+          <h3>We Score</h3>
+          <p>Each lead gets a 7-point score based on website status, social activity, review count, and booking need. Only the best make the cut.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📧</div>
+          <h3>We Deliver</h3>
+          <p>You get a clean list with names, addresses, phone numbers, Instagram handles, and recommended outreach angles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="comparison">
+    <div class="container">
+      <h2 class="section-title">What Each Tier Gets</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th>Starter</th>
+            <th>Pro</th>
+            <th>Company</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Business Name</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Address</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Phone Number</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Google Maps Link</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Website Status</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Instagram Handle</td>
+            <td class="x">—</td>
+            <td class="check">✓</td>
+            <td class="check">✓ + followers</td>
+            <td class="check">✓ + full audit</td>
+          </tr>
+          <tr>
+            <td>Email Address</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="check">✓ (try to find)</td>
+            <td class="check">✓ (verified)</td>
+          </tr>
+          <tr>
+            <td>Review Count</td>
+            <td class="x">—</td>
+            <td class="check">✓ (approx)</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Owner Name</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Business Age</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="check">✓ (est)</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Social Media Audit</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="check">✓</td>
+            <td class="check">✓ deep</td>
+          </tr>
+          <tr>
+            <td>Competitor Info</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Outreach Script</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="x">—</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr class="highlight">
+            <td>Leads Per Month</td>
+            <td>5 (one-time)</td>
+            <td>15</td>
+            <td>50</td>
+            <td>150</td>
+          </tr>
+          <tr class="highlight">
+            <td>Time to Hunt</td>
+            <td>15 min</td>
+            <td>1 hr</td>
+            <td>3-4 hrs</td>
+            <td>8-12 hrs</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="comparison-note">All paid plans include monthly delivery, cancel anytime, and priority email support.</p>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <h2 class="section-title">Simple Pricing</h2>
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="pricing-card">
+          <h3>Free</h3>
+          <div class="price">$0<span>/month</span></div>
+          <p class="description">Try before you buy</p>
+          <ul>
+            <li>5 leads one-time</li>
+            <li>Basic info only</li>
+            <li>1 niche (your choice)</li>
+            <li>Delivered via email</li>
+            <li>No credit card required</li>
+          </ul>
+          <a href="free.html" class="cta">Get Free Leads</a>
+        </div>
+
+        <!-- Starter -->
+        <div class="pricing-card">
+          <h3>Starter</h3>
+          <div class="price">$29<span>/month</span></div>
+          <p class="description">For side hustlers</p>
+          <ul>
+            <li>15 leads per month</li>
+            <li>Full contact details</li>
+            <li>2 niches included</li>
+            <li>Instagram handles</li>
+            <li>Cancel anytime — no fees</li>
+          </ul>
+          <a href="https://buy.stripe.com/28E3cxacnaKtdtA8hZao80i" class="cta">Get Started</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-card popular">
+          <div class="popular-badge">Most Popular</div>
+          <h3>Pro</h3>
+          <div class="price">$99<span>/month</span></div>
+          <p class="description">For serious freelancers</p>
+          <ul>
+            <li>50 leads per month</li>
+            <li>Verified email addresses</li>
+            <li>5 niches included</li>
+            <li>Social media audit</li>
+            <li>Outreach templates</li>
+            <li>Cancel anytime — no fees</li>
+          </ul>
+          <a href="https://buy.stripe.com/cNi5kF0BNcSBbls2XFao80j" class="cta">Get Started</a>
+        </div>
+
+        <!-- Company -->
+        <div class="pricing-card">
+          <h3>Company</h3>
+          <div class="price">$299<span>/month</span></div>
+          <p class="description">For agencies & teams</p>
+          <ul>
+            <li>150 leads per month</li>
+            <li>Verified emails + phones</li>
+            <li>Unlimited niches</li>
+            <li>Custom outreach scripts</li>
+            <li>Cancel anytime — no fees</li>
+          </ul>
+          <a href="https://buy.stripe.com/6oU5kF70bdWFgFM7dVao80k" class="cta">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <h2 class="section-title">Questions?</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>What makes a lead "qualified"?</h4>
+          <p>We score each business on a 7-point system: no website (+2), active social media (+2), low reviews indicating early stage (+1), booking service needed (+1), and inconsistent branding (+1). Only businesses scoring 3+ make the list.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What niches do you cover?</h4>
+          <p>Barbershops, nail salons, hair stylists, lash techs, estheticians, photographers, fitness trainers, tattoo artists, car detailing, and cleaning services. More niches added based on demand.</p>
+        </div>
+        <div class="faq-item">
+          <h4>How fresh are the leads?</h4>
+          <p>All leads are verified within 7 days of delivery. We check that businesses are still active, contact info is current, and they haven't launched a website since we found them.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Can I request specific locations?</h4>
+          <p>Yes. All plans let you specify city/metro area. Business plan also supports ZIP code targeting and radius-based searches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to stop hunting and start closing?</h2>
+      <p>Get 5 leads free. No credit card required.</p>
+      <a href="free.html" class="hero-cta">Get Free Leads →</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Lead Hunter. Part of InnerG Intel.</p>
+    </div>
+  </footer>
+</body>
+</html>
