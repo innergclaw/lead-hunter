@@ -85,60 +85,167 @@ async function getPageContent() {
 function parseLeadsFromDuckDuckGo(content, tier) {
   const text = content.text || '';
   const leads = [];
+  const seenNames = new Set();
   
-  // Look for business patterns in text
-  const lines = text.split('\n').filter(line => line.trim());
+  // STRICT Blocklist - exclude these completely
+  const BLOCKLIST = [
+    // Directories & platforms
+    'yelp', 'google', 'mapquest', 'booksy', 'square', 'facebook', 'instagram',
+    'tiktok', 'youtube', 'hours guide', 'hours open', 'salondiscover', 'local',
+    'find local', 'discover', 'best of', 'near me', 'services', 'appointment',
+    'booking', 'schedule', 'open now', 'closed', 'reviews', 'photos',
+    'directions', 'website', 'phone', 'address', 'map', 'search', 'results',
+    'privacy', 'terms', 'about', 'contact', 'home', 'menu', 'book now',
+    'get directions', 'call now', 'visit website', 'read more', 'learn more',
+    'view profile', 'see all', 'show more', 'load more', 'next page',
+    'page 1', 'page 2', '1 - 10', 'of 100', 'sort by', 'filter by',
+    'booksy inc', 'the booking', 'app store', 'play store', 'download',
+    'install', 'get app', 'mobile app', 'website builder', 'wix', 'squarespace',
+    'wordpress', 'godaddy', 'shopify', 'etsy', 'amazon', 'ebay', 'craigslist',
+    'barbershops.net', 'locate', 'groupon', 'thumbtack', 'porch', 'angie',
+    
+    // Generic non-businesses
+    'services', 'service', 'local', 'best', 'top', 'near', 'find', 
+    'search', 'results', 'page', 'next', 'previous', 'loading',
+    'error', '404', 'home', 'about', 'contact', 'menu', 'nav',
+    'experience', 'updated', 'guide', 'the best', '[updated', '2026]', '2025]',
+    'in philadelphia', 'philadelphia pa', 'philadelphia, pa', 'barber shops',
+    'barbershops', 'hair salons', 'nail salons', 
+    
+    // Articles and blog titles
+    'the ultimate', 'ultimate guide', 'complete guide', 'how to', 'top 10',
+    'best of', 'review', 'reviews 202', 'vs ', 'versus', 'compared',
+    'what is', 'where to', 'when to', 'why choose', 'should you',
+    
+    // Single words that aren't businesses
+    'barbers', 'salons', 'shops', 'stores', 'spa', 'studio', 'shop',
+    'place', 'spot', 'location', 'area', 'center', 'centre'
+  ];
   
-  // Simple parsing - look for patterns that look like business listings
-  // This is a basic parser - can be improved with better pattern matching
+  // Helper to check if name is valid business
+  function isValidBusiness(name) {
+    // Clean up the name
+    const cleanName = name.trim();
+    const lower = cleanName.toLowerCase();
+    
+    // Must be 3-40 chars (business names aren't super long)
+    if (cleanName.length < 3 || cleanName.length > 40) return false;
+    
+    // Must start with capital letter
+    if (!cleanName.match(/^[A-Z]/)) return false;
+    
+    // Must contain at least 2 words OR be a proper brand name
+    // (real businesses usually have 2+ words like "Joe's Barbershop" or "Main Street Cuts")
+    const wordCount = cleanName.split(/\s+/).length;
+    if (wordCount < 2) {
+      // Single word might be okay if it's a proper brand (e.g., "Supercuts")
+      // but most single words are generic
+      return false;
+    }
+    
+    // Block if contains any blocklisted term
+    for (const blocked of BLOCKLIST) {
+      if (lower.includes(blocked)) return false;
+    }
+    
+    // Block URLs and domains
+    if (cleanName.match(/\.com|\.net|\.org|\.io/i)) return false;
+    
+    // Block names with brackets (article titles)
+    if (cleanName.match(/\[|\]\{}/)) return false;
+    
+    // Block all-caps (not business names)
+    if (cleanName === cleanName.toUpperCase()) return false;
+    
+    // Block all-lowercase
+    if (cleanName === cleanName.toLowerCase()) return false;
+    
+    // Must have letters (not just numbers)
+    if (!cleanName.match(/[a-zA-Z]{3,}/)) return false;
+    
+    // Block dates (like "Feb 25, 2026")
+    if (cleanName.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i)) return false;
+    
+    // Block if starts with numbers (addresses, not business names)
+    if (cleanName.match(/^\d/)) return false;
+    
+    // Block very generic patterns
+    if (cleanName.match(/^(the|a|an)\s+(best|top|good)/i)) return false;
+    
+    return true;
+  }
+  
+  // Helper to extract clean address
+  function extractAddress(lines, startIdx) {
+    for (let j = startIdx; j < Math.min(startIdx + 3, lines.length); j++) {
+      const line = lines[j].trim();
+      
+      // Skip lines that are clearly not addresses
+      if (line.length > 100) continue; // Too long
+      if (line.match(/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i)) continue; // Dates
+      if (line.match(/you might also|thank me later|check out/i)) continue; // Blog text
+      if (line.match(/vibe|atmosphere|experience/i)) continue; // Descriptions
+      
+      // Address patterns: "123 Main St" or "123 Main Street, City, ST 12345"
+      if (line.match(/^\d+\s+[A-Za-z]+\s+(St|Street|Ave|Avenue|Blvd|Boulevard|Rd|Road|Dr|Drive|Ln|Lane|Way|Pl|Place|Ct|Court|Apt|Suite)/i)) {
+        // Clean up the address (remove trailing descriptions)
+        let address = line.replace(/\s+(🗺️|☎️|🌐|🕒).*$/, '').trim();
+        return address;
+      }
+    }
+    return null;
+  }
+  
+  // Helper to extract phone
+  function extractPhone(lines, startIdx) {
+    for (let j = startIdx; j < Math.min(startIdx + 4, lines.length); j++) {
+      const line = lines[j];
+      // Phone patterns: (215) 555-1234 or 215-555-1234
+      const phoneMatch = line.match(/\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+      if (phoneMatch) {
+        // Validate it's not a fake/short number
+        const digits = phoneMatch[0].replace(/\D/g, '');
+        if (digits.length === 10) return phoneMatch[0];
+      }
+    }
+    return null;
+  }
+  
+  // Parse lines
+  const lines = text.split('\n')
+    .map(l => l.trim())
+    .filter(l => l.length > 0 && l.length < 100); // Skip very long lines (articles)
+  
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     
-    // Pattern: Business name (often followed by address/phone)
-    if (line.match(/^[A-Z][a-zA-Z\s&']{2,50}$/) && 
-        i + 1 < lines.length && 
-        (lines[i + 1].match(/\d+/) || lines[i + 1].includes('St') || lines[i + 1].includes('Ave'))) {
+    // Skip if we've seen this name
+    const nameKey = line.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (seenNames.has(nameKey)) continue;
+    
+    // Check if this looks like a business name
+    if (isValidBusiness(line)) {
+      // Look ahead for address/phone
+      const address = extractAddress(lines, i + 1);
+      const phone = extractPhone(lines, i + 1);
       
-      const lead = {
-        name: line.trim(),
-        address: null,
-        phone: null,
-        google_maps: null,
-        website: null,
-        instagram: null,
-        score: 0
-      };
+      // For free tier, be more lenient - just need name
+      // For paid tiers, require address OR phone
+      const minRequirements = (tier === 'free') ? true : (address || phone);
       
-      // Look for address in next few lines
-      for (let j = i + 1; j < Math.min(i + 5, lines.length); j++) {
-        const nextLine = lines[j];
+      if (minRequirements) {
+        const lead = {
+          name: line.trim(),
+          address: address,
+          phone: phone,
+          google_maps: null,
+          website: null,
+          instagram: null,
+          review_count: null,
+          score: 3 // Base score for qualifying
+        };
         
-        // Address pattern
-        if (!lead.address && nextLine.match(/\d+\s+\w+\s+(St|Ave|Blvd|Rd|Dr|Ln|Way)/)) {
-          lead.address = nextLine.trim();
-        }
-        
-        // Phone pattern
-        if (!lead.phone && nextLine.match(/\(\d{3}\)\s*\d{3}[-\s]?\d{4}/)) {
-          lead.phone = nextLine.match(/\(\d{3}\)\s*\d{3}[-\s]?\d{4}/)[0];
-        }
-        
-        // Rating/review pattern (for scoring)
-        if (nextLine.match(/\d\.\d\s*\(\d+\)/)) {
-          const match = nextLine.match(/\d\.\d\s*\((\d+)\)/);
-          if (match) {
-            const reviews = parseInt(match[1]);
-            if (reviews < 50) lead.score += 1; // Low reviews = early stage
-          }
-        }
-      }
-      
-      // Base scoring
-      lead.score += 2; // No website assumed (they're on DDG not Google)
-      lead.score += 1; // Needs booking system (assumed for service businesses)
-      
-      // Only add if we have at least name
-      if (lead.name && lead.name.length > 3) {
+        seenNames.add(nameKey);
         leads.push(lead);
       }
     }
